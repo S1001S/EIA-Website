@@ -17,4 +17,4 @@ python-decouple==3.6
 sqlparse==0.4.2
 tzdata==2022.1
 whitenoise==6.1.0
-opencv-python-headless==4.4.0.42
+opencv-python-headless
