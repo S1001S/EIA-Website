@@ -16,8 +16,6 @@ import os
 import cv2
 import face_recognition
 
-citizen=Group.objects.get_or_create(name='Citizen')
-police=Group.objects.get_or_create(name='Police')
 
 file_urls=[]
 
@@ -47,8 +45,9 @@ def police_signup(request):
                         policeuser.first_name=firstname
                         policeuser.last_name=lastname
                         policeuser.save()
-                        user=Group.objects.get(name='Police')
-                        policeuser.groups.add(user)
+                        user=Group.objects.get_or_create(name='Police')
+                        print(user)
+                        policeuser.groups.add(user[0])
                         messages.success(request,"Your account has been successfully created")
                         return redirect("Login Page")
         else:
@@ -159,8 +158,6 @@ def citizen_register(request):
         citizenpassword1=request.POST.get('citizenpassword1','')
         citizenpassword2=request.POST.get('citizenpassword2','')
         if citizenpassword1==citizenpassword2:
-                    # citizendetail=CitizenDetail(citizenfirstname=citizenfirstname, citizenlastname=citizenlastname,aadhar=aadhar,citizenemail=citizenemail, citizenpassword=citizenpassword1)
-                    # citizendetail.save()
                     if User.objects.filter(username=citizenusername).first():
                         messages.error(request,"This username already exists")
                         return redirect('Login Page')
@@ -169,8 +166,8 @@ def citizen_register(request):
                         citizenuser.first_name=citizenfirstname
                         citizenuser.last_name=citizenlastname
                         citizenuser.save()
-                        user=Group.objects.get(name='Citizen')
-                        citizenuser.groups.add(user)
+                        user=Group.objects.get_or_create(name='Citizen')
+                        citizenuser.groups.add(user[0])
                         messages.success(request,"Your account has been successfully created")
                         return redirect("Login Page")
         else:
